@@ -1,0 +1,27 @@
+:root {
+  /* colors */
+
+  /* fonts */
+  --font-base: Inter, sans-serif;
+}
+
+body {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+
+  /* font-base */
+  font-family: var(--font-base);
+}
+
+button,
+a,
+input {
+  font-family: var(--font-base);
+}
+
+button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
