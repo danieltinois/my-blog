@@ -11,14 +11,14 @@ const { placeholder } = Astro.props;
     id="search-input"
     type="search"
     placeholder={placeholder}
-    class="h-12 w-64 rounded-2xl bg-white/5 py-2 pr-12 pl-4 text-xs transition-all duration-300 outline-none focus:w-80 focus:bg-white/10 focus:ring-1 focus:ring-white/20 sm:text-sm"
+    class="bg-bg-ui focus:bg-bg-ui-hover focus:ring-border-strong border-border-ui h-12 w-64 rounded-2xl border-2 py-2 pr-12 pl-4 text-xs transition-all duration-300 outline-none focus:w-80 focus:ring-1 sm:text-sm"
   />
 
   <div
     class="pointer-events-none absolute right-6 hidden items-center group-focus-within:hidden sm:flex"
   >
     <kbd
-      class="flex h-5 items-center gap-1 rounded border border-white/20 bg-white/10 px-1.5 font-sans text-[10px] font-medium text-white/40"
+      class="text-tx-dimmed border-border-strong bg-bg-ui-hover flex h-5 items-center gap-1 rounded border px-1.5 font-sans text-[10px] font-medium"
     >
       <span id="kbd-platform">⌘</span>K
     </kbd>
@@ -26,7 +26,7 @@ const { placeholder } = Astro.props;
 </form>
 
 <script>
-  import { initSearchShortCut } from "../../actions/shortCutSearch";
+  import { initSearchShortCut } from "@actions/shortCutSearch";
 
   initSearchShortCut();
 
