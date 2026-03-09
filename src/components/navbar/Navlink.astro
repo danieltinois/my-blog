@@ -1,0 +1,11 @@
+---
+const { adressLink, adressTitle } = Astro.props;
+---
+
+<li
+  class="flex items-center gap-6 before:h-3 before:w-[1px] before:bg-white/60 first:before:hidden"
+>
+  <a href=`/${adressLink}` class="text-sm font-medium text-white"
+    >{adressTitle}</a
+  >
+</li>

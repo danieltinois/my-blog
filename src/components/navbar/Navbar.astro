@@ -1,0 +1,49 @@
+---
+import Navgithub from "./Navgithub.astro";
+import Navlink from "./Navlink.astro";
+import Navsearch from "./Navsearch.astro";
+import Navtheme from "./Navtheme.astro";
+
+const nameLinks = [
+  { link: "articles", label: "artigos" },
+  { link: "about", label: "sobre" },
+];
+---
+
+<header
+  class="sticky top-0 z-50 w-full border-b border-white/10 bg-[var(--bg-dark)]/70 backdrop-blur-md"
+>
+  <nav
+    class="mx-auto grid h-20 max-w-7xl grid-cols-3 items-center px-6 lg:px-10"
+    aria-label="Navegação Principal"
+  >
+    <div class="flex justify-start">
+      <a href="/" class="group flex items-center gap-2 outline-none">
+        <span
+          class="text-lg font-black tracking-tighter uppercase transition-colors group-hover:text-white/70"
+        >
+          my<span class="text-white/40">.</span>blog
+        </span>
+      </a>
+    </div>
+
+    <div class="hidden justify-center md:flex">
+      <ul class="flex items-center gap-6">
+        {
+          nameLinks.map((item) => (
+            <>
+              <Navlink adressLink={item.link} adressTitle={item.label} />
+            </>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="flex items-center justify-end gap-3">
+      <Navgithub />
+      <Navtheme />
+
+      <Navsearch placeholder="pesquisar por artigos..." />
+    </div>
+  </nav>
+</header>

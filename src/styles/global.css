@@ -1,41 +1,64 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-page: var(--bg-page);
+  --color-tx-base: var(--text-base);
+  --color-border-ui: var(--border-base);
+
+  --font-inter: var(--font-base);
+}
+
 :root {
-  /* colors */
-  --bg-dark: #17171a;
-  --tx-dark-base: #fff;
-
-  /* fonts */
-  --font-base: Inter, sans-serif;
+  --bg-page: #ffffff;
+  --text-base: #17171a;
+  --border-base: rgba(0, 0, 0, 0.1);
+  --font-base: "Inter", sans-serif;
 }
 
-body {
-  margin: 0px;
-  padding: 0px;
-  box-sizing: border-box;
-
-  /* bg-base */
-  background-color: var(--bg-dark);
-
-  /* tx-color-base */
-  color: var(--tx-dark-base);
-
-  /* font-base */
-  font-family: var(--font-base);
+.dark {
+  --bg-page: #17171a;
+  --text-base: #ffffff;
+  --border-base: rgba(255, 255, 255, 0.1);
 }
 
-button,
-a,
-input {
-  font-family: var(--font-base);
-  color: var(--tx-dark-base);
-}
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-button {
-  border: none;
-  background: transparent;
-  cursor: pointer;
-}
+  body {
+    background-color: var(--bg-page);
+    color: var(--text-base);
+    font-family: var(--font-base);
 
-a {
-  text-decoration: none;
-  cursor: pointer;
+    @apply antialiased transition-colors duration-500;
+  }
+
+  button,
+  a,
+  input {
+    font-family: inherit;
+    color: inherit;
+  }
+
+  button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  a {
+    text-decoration: none;
+    cursor: pointer;
+    @apply transition-opacity hover:opacity-80;
+  }
+
+  input[type="search"]::-webkit-search-decoration,
+  input[type="search"]::-webkit-search-cancel-button,
+  input[type="search"]::-webkit-search-results-button,
+  input[type="search"]::-webkit-search-results-decoration {
+    display: none;
+  }
 }
