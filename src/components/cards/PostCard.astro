@@ -1,0 +1,76 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  url: string;
+  tags?: string[];
+}
+
+const { title, description, pubDate, url, tags } = Astro.props as Props;
+
+const formattedDate = pubDate.toLocaleDateString("pt-br", {
+  day: "2-digit",
+  month: "long",
+  year: "numeric",
+});
+---
+
+<a
+  href={url}
+  class="group block w-full overflow-hidden rounded-xl border border-zinc-200 bg-white transition-all hover:border-zinc-300 hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-700"
+>
+  <article class="flex h-full flex-col">
+    <div class="flex flex-1 flex-col p-5">
+      <div class="mb-3 flex items-center gap-2">
+        <time
+          datetime={pubDate.toISOString()}
+          class="text-xs text-zinc-500 dark:text-zinc-400"
+        >
+          {formattedDate}
+        </time>
+        {
+          tags &&
+            tags
+              .slice(0, 2)
+              .map((tag) => (
+                <span class="rounded-full bg-zinc-100 px-2 py-0.5 text-[10px] font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                  #{tag}
+                </span>
+              ))
+        }
+      </div>
+
+      <h3
+        class="mb-2 text-xl font-bold text-zinc-900 transition-colors group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400"
+      >
+        {title}
+      </h3>
+
+      <p
+        class="line-clamp-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400"
+      >
+        {description}
+      </p>
+
+      <div
+        class="mt-auto flex items-center pt-4 text-sm font-medium text-blue-600 dark:text-blue-400"
+      >
+        Ler artigo
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+        </svg>
+      </div>
+    </div>
+  </article>
+</a>

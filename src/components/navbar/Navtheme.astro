@@ -4,7 +4,7 @@ import { Icon } from "astro-icon/components";
 
 <button
   id="theme-toggle"
-  class="flex h-9 w-9 items-center justify-center rounded-lg border border-border-ui bg-bg-ui text-tx-muted transition-all hover:bg-bg-ui-hover hover:text-tx-base"
+  class="border-border-ui bg-bg-ui text-tx-muted hover:bg-bg-ui-hover hover:text-tx-base transition:duration-500 flex h-9 w-9 items-center justify-center rounded-lg border-2 transition-all"
   aria-label="Alternar tema"
 >
   <Icon name="lucide:sun" class="size-5" id="sun-icon" />
@@ -24,8 +24,8 @@ import { Icon } from "astro-icon/components";
 
   const updateIcons = () => {
     const isDark = document.documentElement.classList.contains("dark");
-    document.getElementById("sun-icon")?.classList.toggle("hidden", !isDark);
-    document.getElementById("moon-icon")?.classList.toggle("hidden", isDark);
+    document.getElementById("moon-icon")?.classList.toggle("hidden", !isDark);
+    document.getElementById("sun-icon")?.classList.toggle("hidden", isDark);
   };
 
   updateIcons();

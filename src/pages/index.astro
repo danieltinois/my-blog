@@ -1,7 +1,21 @@
 ---
+import PostCard from "@components/cards/PostCard.astro";
 import Base from "@layouts/base.astro";
 ---
 
 <Base pageTitle="home">
-  <h1>teste</h1>
+  <div class="grid h-screen grid-cols-6 grid-rows-5 gap-0">
+    <div class="col-span-4 row-span-5">
+      <div class="flex flex-col gap-2 px-6">
+        <PostCard
+          title="Meu Primeiro Post com Astro"
+          description="Explorando as capacidades de performance e as ilhas de interatividade do Astro 4.0."
+          pubDate={new Date("2026-03-10")}
+          url="/blog/primeiro-post"
+          tags={["astro", "webdev"]}
+        />
+      </div>
+    </div>
+    <div class="col-span-2 row-span-5">teste</div>
+  </div>
 </Base>
