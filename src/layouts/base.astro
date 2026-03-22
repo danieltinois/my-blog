@@ -1,5 +1,5 @@
 ---
-import Navbar from "@components/navbar/Navbar.astro";
+import Navbar from "@components/layout/navbar/Navbar.astro";
 import "@styles/global.css";
 
 const { pageTitle } = Astro.props;
@@ -20,22 +20,19 @@ const { pageTitle } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>my blog - {pageTitle}</title>
 
+    <!-- Lógica espelhada em src/lib/theme.ts (getEffectiveTheme) — evita flash antes do JS -->
     <script is:inline>
-      const getTheme = () => {
-        const saved = localStorage.getItem("theme");
-        if (saved) return saved;
-        return window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light";
-      };
-
-      const theme = getTheme();
-      if (theme === "dark") {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
-      localStorage.setItem("theme", theme);
+      (function () {
+        var k = "theme";
+        var s = localStorage.getItem(k);
+        var dark =
+          s === "dark"
+            ? true
+            : s === "light"
+              ? false
+              : window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.classList.toggle("dark", dark);
+      })();
     </script>
   </head>
   <body>

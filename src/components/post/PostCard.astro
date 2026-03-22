@@ -18,15 +18,12 @@ const formattedDate = pubDate.toLocaleDateString("pt-br", {
 
 <a
   href={url}
-  class="group block w-full overflow-hidden rounded-xl border border-zinc-200 bg-white transition-all hover:border-zinc-300 hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-700"
+  class="group border-border-ui bg-surface hover:border-surface-border-hover block w-full overflow-hidden rounded-xl border transition-all duration-300 hover:shadow-lg"
 >
   <article class="flex h-full flex-col">
     <div class="flex flex-1 flex-col p-5">
       <div class="mb-3 flex items-center gap-2">
-        <time
-          datetime={pubDate.toISOString()}
-          class="text-xs text-zinc-500 dark:text-zinc-400"
-        >
+        <time datetime={pubDate.toISOString()} class="text-tx-dimmed text-xs">
           {formattedDate}
         </time>
         {
@@ -34,7 +31,7 @@ const formattedDate = pubDate.toLocaleDateString("pt-br", {
             tags
               .slice(0, 2)
               .map((tag) => (
-                <span class="rounded-full bg-zinc-100 px-2 py-0.5 text-[10px] font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                <span class="bg-tag-bg text-tag-text rounded-full px-2 py-0.5 text-[10px] font-medium">
                   #{tag}
                 </span>
               ))
@@ -42,20 +39,16 @@ const formattedDate = pubDate.toLocaleDateString("pt-br", {
       </div>
 
       <h3
-        class="mb-2 text-xl font-bold text-zinc-900 transition-colors group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400"
+        class="text-tx-base group-hover:text-accent-hover mb-2 text-xl font-bold transition-colors"
       >
         {title}
       </h3>
 
-      <p
-        class="line-clamp-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400"
-      >
+      <p class="text-tx-muted line-clamp-3 text-sm leading-relaxed">
         {description}
       </p>
 
-      <div
-        class="mt-auto flex items-center pt-4 text-sm font-medium text-blue-600 dark:text-blue-400"
-      >
+      <div class="text-accent group-hover:text-accent-hover mt-auto flex items-center pt-4 text-sm font-medium transition-colors">
         Ler artigo
         <svg
           xmlns="http://www.w3.org/2000/svg"

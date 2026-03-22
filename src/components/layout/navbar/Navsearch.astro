@@ -26,9 +26,9 @@ const { placeholder } = Astro.props;
 </form>
 
 <script>
-  import { initSearchShortCut } from "@actions/shortCutSearch";
+  import { initSearchShortcut } from "@lib/search-shortcut";
 
-  initSearchShortCut();
+  initSearchShortcut();
 
-  document.addEventListener("astro:page-load", initSearchShortCut);
+  document.addEventListener("astro:page-load", initSearchShortcut);
 </script>

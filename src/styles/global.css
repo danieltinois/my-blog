@@ -1,24 +1,82 @@
 @import "tailwindcss";
 
-@theme {
-  --color-bg-page: var(--bg-page);
-  --color-tx-base: var(--text-base);
-  --color-border-ui: var(--border-base);
+/*
+ * Tema: altere apenas as variáveis em :root e .dark.
+ * O @theme abaixo expõe tokens para classes Tailwind (bg-bg-page, text-tx-muted, …).
+ */
 
+@theme {
   --font-inter: var(--font-base);
+
+  --color-bg-page: var(--bg-page);
+  --color-bg-ui: var(--bg-ui);
+  --color-bg-ui-hover: var(--bg-ui-hover);
+
+  --color-surface: var(--surface);
+  --color-surface-border-hover: var(--surface-border-hover);
+
+  --color-tx-base: var(--text-base);
+  --color-tx-muted: var(--text-muted);
+  --color-tx-dimmed: var(--text-dimmed);
+
+  --color-border-ui: var(--border-ui);
+  --color-border-strong: var(--border-strong);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+
+  --color-tag-bg: var(--tag-bg);
+  --color-tag-text: var(--tag-text);
 }
 
 :root {
-  --bg-page: #ffffff;
-  --text-base: #17171a;
-  --border-base: rgba(0, 0, 0, 0.1);
+  color-scheme: light;
+
   --font-base: "Inter", sans-serif;
+
+  --bg-page: #fafafa;
+  --bg-ui: #f4f4f5;
+  --bg-ui-hover: #e4e4e7;
+
+  --surface: #ffffff;
+  --surface-border-hover: #d4d4d8;
+
+  --text-base: #18181b;
+  --text-muted: #52525b;
+  --text-dimmed: #71717a;
+
+  --border-ui: rgb(0 0 0 / 0.1);
+  --border-strong: rgb(0 0 0 / 0.16);
+
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+
+  --tag-bg: #f4f4f5;
+  --tag-text: #52525b;
 }
 
 .dark {
-  --bg-page: #17171a;
-  --text-base: #ffffff;
-  --border-base: rgba(255, 255, 255, 0.1);
+  color-scheme: dark;
+
+  --bg-page: #09090b;
+  --bg-ui: #18181b;
+  --bg-ui-hover: #27272a;
+
+  --surface: #121214;
+  --surface-border-hover: #3f3f46;
+
+  --text-base: #fafafa;
+  --text-muted: #a1a1aa;
+  --text-dimmed: #71717a;
+
+  --border-ui: rgb(255 255 255 / 0.1);
+  --border-strong: rgb(255 255 255 / 0.18);
+
+  --accent: #60a5fa;
+  --accent-hover: #93c5fd;
+
+  --tag-bg: #27272a;
+  --tag-text: #d4d4d8;
 }
 
 @layer base {
@@ -33,7 +91,7 @@
     color: var(--text-base);
     font-family: var(--font-base);
 
-    @apply antialiased transition-colors duration-500;
+    @apply antialiased transition-colors duration-300;
   }
 
   button,
