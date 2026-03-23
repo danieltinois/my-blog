@@ -1,5 +1,6 @@
 ---
 import PostCard from "@components/post/PostCard.astro";
+import PostLink from "@components/post/PostLink.astro";
 import Base from "@layouts/base.astro";
 ---
 
@@ -16,6 +17,9 @@ import Base from "@layouts/base.astro";
         />
       </div>
     </div>
-    <div class="col-span-2 row-span-5">teste</div>
+    <div class="col-span-2 row-span-5">
+      <h1 class="font-bold">Últimos posts</h1>
+      <PostLink title="Meu Primeiro Post com Astro" url="/blog/primeiro-post" />
+    </div>
   </div>
 </Base>

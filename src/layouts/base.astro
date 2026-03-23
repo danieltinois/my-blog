@@ -5,7 +5,7 @@ import "@styles/global.css";
 const { pageTitle } = Astro.props;
 ---
 
-<html lang="en">
+<html lang="pt-br">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -20,7 +20,6 @@ const { pageTitle } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>my blog - {pageTitle}</title>
 
-    <!-- Lógica espelhada em src/lib/theme.ts (getEffectiveTheme) — evita flash antes do JS -->
     <script is:inline>
       (function () {
         var k = "theme";

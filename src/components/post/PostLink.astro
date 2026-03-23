@@ -1,0 +1,10 @@
+---
+interface PostLinkProps {
+  title: string;
+  url: string;
+}
+
+const { title, url } = Astro.props as PostLinkProps;
+---
+
+<a class="text-accent hover:text-accent-hover underline" href={url}>{title}</a>
