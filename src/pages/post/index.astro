@@ -1,7 +1,37 @@
 ---
+import PostMeta from "@components/post/PostMeta.astro";
+import PostTitle from "@components/post/PostTitle.astro";
 import Base from "@layouts/base.astro";
+
+import Content from "@components/content/content.md";
 ---
 
 <Base pageTitle="post">
-  <h1>teste post</h1>
+  <main class="w-full px-4 py-8 sm:px-6 sm:py-12">
+    <a href="/post" class="text-tx-dimmed text-sm hover:underline"
+      >← Voltar aos posts</a
+    >
+
+    <div class="mx-auto w-full max-w-3xl">
+      <article class="mt-6">
+        <header class="mb-6 sm:mb-8">
+          <PostTitle title="Meu Primeiro Post com Astro" />
+
+          <div
+            class="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between"
+          >
+            <PostMeta
+              pubDate={new Date("2026-03-10")}
+              readingTime={5}
+              tags={["tag1", "tag2"]}
+            />
+          </div>
+        </header>
+
+        <section class="post-content prose dark:prose-invert mt-6">
+          <Content />
+        </section>
+      </article>
+    </div>
+  </main>
 </Base>

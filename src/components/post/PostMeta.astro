@@ -1,0 +1,31 @@
+---
+interface PostMetaProps {
+  pubDate: Date;
+  readingTime: Number;
+  tags: string[];
+}
+
+const { pubDate, readingTime, tags } = Astro.props as PostMetaProps;
+
+const formattedDate = pubDate.toLocaleDateString("pt-br", {
+  day: "2-digit",
+  month: "long",
+  year: "numeric",
+});
+---
+
+<div class="text-tx-dimmed flex items-center gap-4 text-sm">
+  <time datetime={pubDate.toISOString()}>{formattedDate}</time>
+  <span aria-hidden="true">&bull;</span>
+  <span>{readingTime} min de leitura</span>
+</div>
+
+<div class="flex items-center gap-3">
+  {
+    tags.map((tag) => (
+      <span class="bg-tag-bg text-tag-text rounded-full px-2 py-0.5 text-xs font-medium">
+        #{tag}
+      </span>
+    ))
+  }
+</div>

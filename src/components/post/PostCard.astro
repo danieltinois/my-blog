@@ -27,14 +27,13 @@ const formattedDate = pubDate.toLocaleDateString("pt-br", {
           {formattedDate}
         </time>
         {
-          tags &&
-            tags
-              .slice(0, 2)
-              .map((tag) => (
+          tags
+            ? tags.map((tag) => (
                 <span class="bg-tag-bg text-tag-text rounded-full px-2 py-0.5 text-[10px] font-medium">
                   #{tag}
                 </span>
               ))
+            : null
         }
       </div>
 
@@ -48,7 +47,9 @@ const formattedDate = pubDate.toLocaleDateString("pt-br", {
         {description}
       </p>
 
-      <div class="text-accent group-hover:text-accent-hover mt-auto flex items-center pt-4 text-sm font-medium transition-colors">
+      <div
+        class="text-accent group-hover:text-accent-hover mt-auto flex items-center pt-4 text-sm font-medium transition-colors"
+      >
         Ler artigo
         <svg
           xmlns="http://www.w3.org/2000/svg"

@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 /*
  * Tema: altere apenas as variáveis em :root e .dark.
@@ -118,5 +119,55 @@
   input[type="search"]::-webkit-search-results-button,
   input[type="search"]::-webkit-search-results-decoration {
     display: none;
+  }
+}
+
+/* Post content helpers */
+.post-content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0.75rem 0;
+  border-radius: 6px;
+}
+
+.post-content pre {
+  overflow: auto;
+  border-radius: 8px;
+  background: var(--surface);
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--surface-border-hover);
+}
+
+.post-content code {
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New",
+    monospace;
+  font-size: 0.95em;
+}
+
+/* Reduce prose sizes on small screens for better fit */
+@media (max-width: 640px) {
+  .post-content h1 {
+    font-size: 1.5rem;
+  }
+  .post-content h2 {
+    font-size: 1.25rem;
+  }
+  .post-content {
+    font-size: 0.95rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .post-content {
+    font-size: 1.125rem; /* 18px on desktop */
+    line-height: 1.8;
+  }
+  .post-content h1 {
+    font-size: 2.25rem;
+  }
+  .post-content h2 {
+    font-size: 1.75rem;
   }
 }
