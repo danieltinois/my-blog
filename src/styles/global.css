@@ -236,6 +236,10 @@
 .dark .post-content.prose a {
   color: var(--accent);
 }
+
+.dark .post-content.prose a:hover {
+  color: var(--accent-hover);
+}
 .dark .post-content.prose pre {
   background: var(--surface);
   color: var(--text-base);
