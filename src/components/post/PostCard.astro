@@ -1,4 +1,6 @@
 ---
+import PostTag from "./components/PostTag.astro";
+
 interface Props {
   title: string;
   description: string;
@@ -26,15 +28,7 @@ const formattedDate = pubDate.toLocaleDateString("pt-br", {
         <time datetime={pubDate.toISOString()} class="text-tx-dimmed text-xs">
           {formattedDate}
         </time>
-        {
-          tags
-            ? tags.map((tag) => (
-                <span class="bg-tag-bg text-tag-text rounded-full px-2 py-0.5 text-[10px] font-medium">
-                  #{tag}
-                </span>
-              ))
-            : null
-        }
+        {tags ? tags.map((tag) => <PostTag title={tag} size={10} />) : null}
       </div>
 
       <h3

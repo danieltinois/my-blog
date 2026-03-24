@@ -1,6 +1,6 @@
 ---
-import PostMeta from "@components/post/PostMeta.astro";
-import PostTitle from "@components/post/PostTitle.astro";
+import PostMeta from "@components/post/components/PostMeta.astro";
+import PostTitle from "@components/post/components/PostTitle.astro";
 import Base from "@layouts/base.astro";
 
 import Content from "@components/content/content.md";
@@ -23,7 +23,7 @@ import Content from "@components/content/content.md";
             <PostMeta
               pubDate={new Date("2026-03-10")}
               readingTime={5}
-              tags={["tag1", "tag2"]}
+              tags={["astro", "webdev"]}
             />
           </div>
         </header>
