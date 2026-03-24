@@ -171,3 +171,73 @@
     font-size: 1.75rem;
   }
 }
+
+/* Make Tailwind Typography (.prose) follow our CSS variables for light/dark themes */
+.post-content.prose {
+  color: var(--text-base);
+  transition:
+    color 200ms,
+    background-color 200ms;
+}
+.post-content.prose a {
+  color: var(--accent);
+}
+.post-content.prose a:hover {
+  color: var(--accent-hover);
+}
+.post-content.prose h1,
+.post-content.prose h2,
+.post-content.prose h3 {
+  color: var(--text-base);
+}
+.post-content.prose strong,
+.post-content.prose b {
+  color: var(--text-base);
+  font-weight: 700;
+}
+.post-content.prose blockquote {
+  color: var(--text-muted);
+  border-left-color: var(--surface-border-hover);
+  background: transparent;
+}
+.post-content.prose hr {
+  border-color: var(--surface-border-hover);
+}
+.post-content.prose code {
+  display: inline-block;
+  background: var(--bg-ui);
+  color: var(--text-base);
+  padding: 0.12rem 0.45rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.95em;
+  border: 1px solid transparent;
+}
+.post-content.prose pre {
+  background: var(--surface);
+  color: var(--text-base);
+  border: 1px solid var(--surface-border-hover);
+}
+.post-content.prose pre code {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  font-weight: normal;
+}
+
+.dark .post-content.prose {
+  color: var(--text-base);
+}
+.dark .post-content.prose code {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-base);
+  border-color: rgba(255, 255, 255, 0.03);
+}
+.dark .post-content.prose a {
+  color: var(--accent);
+}
+.dark .post-content.prose pre {
+  background: var(--surface);
+  color: var(--text-base);
+  border-color: var(--surface-border-hover);
+}
