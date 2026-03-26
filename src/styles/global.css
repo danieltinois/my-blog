@@ -1,24 +1,85 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/*
+ * Tema: altere apenas as variáveis em :root e .dark.
+ * O @theme abaixo expõe tokens para classes Tailwind (bg-bg-page, text-tx-muted, …).
+ */
 
 @theme {
-  --color-bg-page: var(--bg-page);
-  --color-tx-base: var(--text-base);
-  --color-border-ui: var(--border-base);
-
   --font-inter: var(--font-base);
+
+  --color-bg-page: var(--bg-page);
+  --color-bg-ui: var(--bg-ui);
+  --color-bg-ui-hover: var(--bg-ui-hover);
+
+  --color-surface: var(--surface);
+  --color-surface-border-hover: var(--surface-border-hover);
+
+  --color-tx-base: var(--text-base);
+  --color-tx-muted: var(--text-muted);
+  --color-tx-dimmed: var(--text-dimmed);
+
+  --color-border-ui: var(--border-ui);
+  --color-border-strong: var(--border-strong);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+
+  --color-tag-bg: var(--tag-bg);
+  --color-tag-text: var(--tag-text);
 }
 
 :root {
-  --bg-page: #ffffff;
-  --text-base: #17171a;
-  --border-base: rgba(0, 0, 0, 0.1);
+  color-scheme: light;
+
   --font-base: "Inter", sans-serif;
+
+  --bg-page: #fafafa;
+  --bg-ui: #f4f4f5;
+  --bg-ui-hover: #e4e4e7;
+
+  --surface: #ffffff;
+  --surface-border-hover: #d4d4d8;
+
+  --text-base: #18181b;
+  --text-muted: #52525b;
+  --text-dimmed: #71717a;
+
+  --border-ui: rgb(0 0 0 / 0.1);
+  --border-strong: rgb(0 0 0 / 0.16);
+
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+
+  /* tags: usar tonalidade do accent */
+  --tag-bg: rgba(37, 99, 235, 0.08); /* light accent tint */
+  --tag-text: var(--accent);
 }
 
 .dark {
-  --bg-page: #17171a;
-  --text-base: #ffffff;
-  --border-base: rgba(255, 255, 255, 0.1);
+  color-scheme: dark;
+
+  --bg-page: #09090b;
+  --bg-ui: #18181b;
+  --bg-ui-hover: #27272a;
+
+  --surface: #121214;
+  --surface-border-hover: #3f3f46;
+
+  --text-base: #fafafa;
+  --text-muted: #a1a1aa;
+  --text-dimmed: #71717a;
+
+  --border-ui: rgb(255 255 255 / 0.1);
+  --border-strong: rgb(255 255 255 / 0.18);
+
+  --accent: #60a5fa;
+  --accent-hover: #93c5fd;
+
+  /* tags no dark: tom mais claro do accent */
+  --tag-bg: rgba(96, 165, 250, 0.12);
+  --tag-text: var(--accent);
 }
 
 @layer base {
@@ -33,7 +94,7 @@
     color: var(--text-base);
     font-family: var(--font-base);
 
-    @apply antialiased transition-colors duration-500;
+    @apply antialiased transition-colors duration-300;
   }
 
   button,
@@ -61,4 +122,128 @@
   input[type="search"]::-webkit-search-results-decoration {
     display: none;
   }
+}
+
+/* Post content helpers */
+.post-content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0.75rem 0;
+  border-radius: 6px;
+}
+
+.post-content pre {
+  overflow: auto;
+  border-radius: 8px;
+  background: var(--surface);
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--surface-border-hover);
+}
+
+.post-content code {
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New",
+    monospace;
+  font-size: 0.95em;
+}
+
+/* Reduce prose sizes on small screens for better fit */
+@media (max-width: 640px) {
+  .post-content h1 {
+    font-size: 1.5rem;
+  }
+  .post-content h2 {
+    font-size: 1.25rem;
+  }
+  .post-content {
+    font-size: 0.95rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .post-content {
+    font-size: 1.125rem; /* 18px on desktop */
+    line-height: 1.8;
+  }
+  .post-content h1 {
+    font-size: 2.25rem;
+  }
+  .post-content h2 {
+    font-size: 1.75rem;
+  }
+}
+
+/* Make Tailwind Typography (.prose) follow our CSS variables for light/dark themes */
+.post-content.prose {
+  color: var(--text-base);
+  transition:
+    color 200ms,
+    background-color 200ms;
+}
+.post-content.prose a {
+  color: var(--accent);
+}
+.post-content.prose a:hover {
+  color: var(--accent-hover);
+}
+.post-content.prose h1,
+.post-content.prose h2,
+.post-content.prose h3 {
+  color: var(--text-base);
+}
+.post-content.prose strong,
+.post-content.prose b {
+  color: var(--text-base);
+  font-weight: 700;
+}
+.post-content.prose blockquote {
+  color: var(--text-muted);
+  border-left-color: var(--surface-border-hover);
+  background: transparent;
+}
+.post-content.prose hr {
+  border-color: var(--surface-border-hover);
+}
+.post-content.prose code {
+  display: inline-block;
+  background: var(--bg-ui);
+  color: var(--text-base);
+  padding: 0.12rem 0.45rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.95em;
+  border: 1px solid transparent;
+}
+.post-content.prose pre {
+  background: var(--surface);
+  color: var(--text-base);
+  border: 1px solid var(--surface-border-hover);
+}
+.post-content.prose pre code {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  font-weight: normal;
+}
+
+.dark .post-content.prose {
+  color: var(--text-base);
+}
+.dark .post-content.prose code {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-base);
+  border-color: rgba(255, 255, 255, 0.03);
+}
+.dark .post-content.prose a {
+  color: var(--accent);
+}
+
+.dark .post-content.prose a:hover {
+  color: var(--accent-hover);
+}
+.dark .post-content.prose pre {
+  background: var(--surface);
+  color: var(--text-base);
+  border-color: var(--surface-border-hover);
 }

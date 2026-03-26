@@ -1,11 +1,11 @@
 ---
-import Navbar from "@components/navbar/Navbar.astro";
+import Navbar from "@components/layout/navbar/Navbar.astro";
 import "@styles/global.css";
 
 const { pageTitle } = Astro.props;
 ---
 
-<html lang="en">
+<html lang="pt-br">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -21,27 +21,23 @@ const { pageTitle } = Astro.props;
     <title>my blog - {pageTitle}</title>
 
     <script is:inline>
-      const getTheme = () => {
-        const saved = localStorage.getItem("theme");
-        if (saved) return saved;
-        return window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light";
-      };
-
-      const theme = getTheme();
-      if (theme === "dark") {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
-      localStorage.setItem("theme", theme);
+      (function () {
+        var k = "theme";
+        var s = localStorage.getItem(k);
+        var dark =
+          s === "dark"
+            ? true
+            : s === "light"
+              ? false
+              : window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.classList.toggle("dark", dark);
+      })();
     </script>
   </head>
   <body>
     <Navbar />
 
-    <article>
+    <article class="mx-auto grid max-w-7xl px-6 pt-6 lg:px-10">
       <slot />
     </article>
   </body>

@@ -1,0 +1,45 @@
+---
+import { Icon } from "astro-icon/components";
+---
+
+<button
+  id="theme-toggle"
+  type="button"
+  class="border-border-ui bg-bg-ui text-tx-muted hover:bg-bg-ui-hover hover:text-tx-base flex h-9 w-9 items-center justify-center rounded-lg border-2 transition-all duration-300"
+  aria-label="Alternar tema"
+>
+  <Icon name="lucide:sun" class="size-5" id="sun-icon" />
+
+  <Icon name="lucide:moon" class="size-5" id="moon-icon" />
+</button>
+
+<script>
+  import { rootIsDark, toggleTheme, syncRootFromPreferences } from "@lib/theme";
+
+  const updateIcons = () => {
+    const isDark = rootIsDark();
+    document.getElementById("moon-icon")?.classList.toggle("hidden", !isDark);
+    document.getElementById("sun-icon")?.classList.toggle("hidden", isDark);
+  };
+
+  const handleToggleClick = () => {
+    toggleTheme();
+    updateIcons();
+  };
+
+  updateIcons();
+
+  document.getElementById("theme-toggle")?.addEventListener("click", handleToggleClick);
+
+  document.addEventListener("astro:after-swap", () => {
+    syncRootFromPreferences();
+    updateIcons();
+  });
+
+  document.addEventListener("astro:page-load", () => {
+    syncRootFromPreferences();
+    updateIcons();
+  });
+
+  window.addEventListener("themechange", updateIcons);
+</script>

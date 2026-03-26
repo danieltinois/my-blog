@@ -1,0 +1,64 @@
+---
+import PostTag from "./components/PostTag.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  url: string;
+  tags?: string[];
+}
+
+const { title, description, pubDate, url, tags } = Astro.props as Props;
+
+const formattedDate = pubDate.toLocaleDateString("pt-br", {
+  day: "2-digit",
+  month: "long",
+  year: "numeric",
+});
+---
+
+<a
+  href={url}
+  class="group border-border-ui bg-surface hover:border-surface-border-hover block w-full overflow-hidden rounded-xl border transition-all duration-300 hover:shadow-lg"
+>
+  <article class="flex h-full flex-col">
+    <div class="flex flex-1 flex-col p-5">
+      <div class="mb-3 flex items-center gap-2">
+        <time datetime={pubDate.toISOString()} class="text-tx-dimmed text-xs">
+          {formattedDate}
+        </time>
+        {tags ? tags.map((tag) => <PostTag title={tag} size={10} />) : null}
+      </div>
+
+      <h3
+        class="text-tx-base group-hover:text-accent-hover mb-2 text-xl font-bold transition-colors"
+      >
+        {title}
+      </h3>
+
+      <p class="text-tx-muted line-clamp-3 text-sm leading-relaxed">
+        {description}
+      </p>
+
+      <div
+        class="text-accent group-hover:text-accent-hover mt-auto flex items-center pt-4 text-sm font-medium transition-colors"
+      >
+        Ler artigo
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+        </svg>
+      </div>
+    </div>
+  </article>
+</a>

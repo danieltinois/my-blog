@@ -1,4 +1,4 @@
-export function initSearchShortCut() {
+export function initSearchShortcut() {
   const searchInput = document.getElementById(
     "search-input",
   ) as HTMLInputElement | null;
