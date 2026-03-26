@@ -7,4 +7,10 @@ interface PostLinkProps {
 const { title, url } = Astro.props as PostLinkProps;
 ---
 
-<a class="text-accent hover:text-accent-hover underline" href={url}>{title}</a>
+<ul class="list-disc">
+  <li class="mb-2 list-none">
+    <a class="text-accent hover:text-accent-hover underline" href={url}
+      >{title}</a
+    >
+  </li>
+</ul>
