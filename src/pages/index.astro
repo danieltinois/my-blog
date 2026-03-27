@@ -1,20 +1,26 @@
 ---
+import NavNextAndPrevious from "@components/navigation/NavNextAndPrevious.astro";
 import PostCard from "@components/post/PostCard.astro";
 import PostLink from "@components/post/components/PostLink.astro";
 import Base from "@layouts/base.astro";
 
-// Pagination: read query params (Astro provides `Astro.request.url` in dev build)
+const apiBaseUrl = import.meta.env.API_BASE_URL;
+
 const url = new URL(Astro.request.url);
 const page = Number(url.searchParams.get("page") || "1");
 const limit = Number(url.searchParams.get("limit") || "5");
 
-const apiUrl = `${import.meta.env.API_BASE_URL}/posts?page=${page}&limit=${limit}`;
+const apiUrl = `${apiBaseUrl}/posts?page=${page}&limit=${limit}`;
 const response = await fetch(apiUrl);
 const result = await response.json();
 
 const postsList = result.data || [];
-const total = result.total || postsList.length;
-const totalPages = Math.max(1, Math.ceil(total / limit));
+
+const apiUrlFixedPosts = `${apiBaseUrl}/posts/fixed-posts`;
+const responseFixedPosts = await fetch(apiUrlFixedPosts);
+const findFixedPosts = await responseFixedPosts.json();
+
+const postsFixedList = findFixedPosts.data || [];
 ---
 
 <Base pageTitle="home">
@@ -33,35 +39,13 @@ const totalPages = Math.max(1, Math.ceil(total / limit));
           ))
         }
 
-        <nav class="mt-6 flex items-center gap-3">
-          {
-            page > 1 ? (
-              <a class="text-accent" href={`/?page=${page - 1}&limit=${limit}`}>
-                ← Anterior
-              </a>
-            ) : (
-              <span class="text-tx-dimmed">← Anterior</span>
-            )
-          }
-
-          <span class="mx-2">{page} / {totalPages}</span>
-
-          {
-            page < totalPages ? (
-              <a class="text-accent" href={`/?page=${page + 1}&limit=${limit}`}>
-                Próxima →
-              </a>
-            ) : (
-              <span class="text-tx-dimmed">Próxima →</span>
-            )
-          }
-        </nav>
+        <NavNextAndPrevious />
       </div>
     </div>
     <div class="col-span-2 row-span-5">
       <h1 class="font-bold">Posts fixados</h1>
       {
-        postsList.map((p: any) => (
+        postsFixedList.map((p: any) => (
           <PostLink title={p.title} url={`/post/${p.id}`} />
         ))
       }
