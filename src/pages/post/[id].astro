@@ -2,60 +2,35 @@
 import PostMeta from "@components/post/components/PostMeta.astro";
 import PostTitle from "@components/post/components/PostTitle.astro";
 import Base from "@layouts/base.astro";
+import { Icon } from "astro-icon/components";
 import { marked } from "marked";
 
-export async function getStaticPaths() {
-  const API_URL = import.meta.env.API_BASE_URL;
-
-  try {
-    console.log("getStaticPaths: API_URL=", API_URL);
-    const response = await fetch(`${API_URL}/posts`);
-    if (!response.ok) {
-      console.error("Failed to fetch posts:", response.status);
-      return [];
-    }
-
-    const posts = await response.json();
-
-    let postList: any[] = [];
-    if (Array.isArray(posts)) postList = posts;
-    else if (posts && Array.isArray(posts.data)) postList = posts.data;
-    else if (posts && Array.isArray(posts.posts)) postList = posts.posts;
-    else if (posts && Array.isArray(posts.results)) postList = posts.results;
-    else if (posts && posts.id) postList = [posts];
-    else if (posts && typeof posts === "object")
-      postList = Object.values(posts);
-
-    return postList
-      .map((p: any) => p && p.id)
-      .filter(Boolean)
-      .map((id: any) => ({ params: { id: String(id) } }));
-  } catch (err) {
-    console.error("Error fetching posts:", err);
-    return [];
-  }
-}
+export const prerender = false;
 
 const API_URL = import.meta.env.API_BASE_URL;
 
 async function fetchJson(url: string) {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Failed to fetch ${url}: ${res.status}`);
-  return res.json();
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    return await res.json();
+  } catch (err) {
+    console.error(`Fetch error at ${url}:`, err);
+    return null;
+  }
 }
 
-const id = Astro.params.id as string;
-if (!id) return Astro.redirect("/404");
+const { id } = Astro.params;
 
-let post: any;
-try {
-  post = await fetchJson(`${API_URL}/posts/${id}`);
-} catch (err) {
-  console.error("Error fetching post by id:", err);
+if (!id) {
   return Astro.redirect("/404");
 }
 
-if (!post || !post.id) return Astro.redirect("/404");
+const post = await fetchJson(`${API_URL}/posts/${id}`);
+
+if (!post || !post.id) {
+  return Astro.redirect("/404");
+}
 
 const contentHtml = post.content ? await marked.parse(post.content) : "";
 const pubDate = post.publishedAt ? new Date(post.publishedAt) : null;
@@ -63,9 +38,13 @@ const pubDate = post.publishedAt ? new Date(post.publishedAt) : null;
 
 <Base pageTitle={post.title}>
   <main class="w-full px-4 py-8 sm:px-6 sm:py-12">
-    <a href="/" class="text-tx-dimmed text-sm hover:underline"
-      >← Voltar aos posts</a
+    <a
+      href="/"
+      class="text-tx-dimmed flex items-center gap-1 text-sm hover:underline"
     >
+      <Icon name="lucide:arrow-left" class="size-5" />
+      <span>Voltar aos posts</span>
+    </a>
 
     <div class="mx-auto w-full max-w-3xl">
       <article class="mt-6">

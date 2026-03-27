@@ -1,0 +1,51 @@
+---
+import { Icon } from "astro-icon/components";
+
+const url = new URL(Astro.request.url);
+const page = Number(url.searchParams.get("page") || "1");
+const limit = Number(url.searchParams.get("limit") || "5");
+
+const apiUrl = `${import.meta.env.API_BASE_URL}/posts?page=${page}&limit=${limit}`;
+const response = await fetch(apiUrl);
+const result = await response.json();
+
+const postsList = result.data || [];
+const total = result.total || postsList.length;
+const totalPages = Math.max(1, Math.ceil(total / limit));
+---
+
+<nav class="mt-6 flex items-center justify-center gap-3">
+  {
+    page > 1 ? (
+      <div class="flex items-center gap-1">
+        <Icon name="lucide:arrow-left" class="text-accent size-5" />
+        <a class="text-accent" href={`/?page=${page - 1}&limit=${limit}`}>
+          Anterior
+        </a>
+      </div>
+    ) : (
+      <div class="flex items-center gap-1">
+        <Icon name="lucide:arrow-left" class="text-tx-dimmed size-5" />
+        <span class="text-tx-dimmed">Anterior</span>
+      </div>
+    )
+  }
+
+  <span class="mx-2">{page} / {totalPages}</span>
+
+  {
+    page < totalPages ? (
+      <div class="flex items-center gap-1">
+        <a class="text-accent" href={`/?page=${page + 1}&limit=${limit}`}>
+          Próxima
+        </a>
+        <Icon name="lucide:arrow-right" class="text-accent size-5" />
+      </div>
+    ) : (
+      <div class="flex items-center gap-1">
+        <span class="text-tx-dimmed">Próxima</span>
+        <Icon name="lucide:arrow-right" class="text-tx-dimmed size-5" />
+      </div>
+    )
+  }
+</nav>
