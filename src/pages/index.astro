@@ -24,9 +24,11 @@ const postsFixedList = findFixedPosts.data || [];
 ---
 
 <Base pageTitle="home">
-  <div class="grid h-screen grid-cols-6 grid-rows-5 gap-0">
-    <div class="col-span-4 row-span-5">
-      <div class="flex flex-col gap-10 px-6">
+  <div
+    class="grid min-h-screen grid-cols-1 gap-8 lg:grid-cols-6 lg:grid-rows-5 lg:gap-0"
+  >
+    <div class="lg:col-span-4 lg:row-span-5">
+      <div class="flex flex-col gap-8 px-0 sm:px-4 lg:px-6">
         {
           postsList.map((post: any) => (
             <PostCard
@@ -42,13 +44,15 @@ const postsFixedList = findFixedPosts.data || [];
         <NavNextAndPrevious />
       </div>
     </div>
-    <div class="col-span-2 row-span-5">
-      <h1 class="font-bold">Posts fixados</h1>
-      {
-        postsFixedList.map((p: any) => (
-          <PostLink title={p.title} url={`/post/${p.id}`} />
-        ))
-      }
+    <div class="lg:col-span-2 lg:row-span-5">
+      <aside class="hidden px-0 sm:px-4 lg:block lg:px-6">
+        <h1 class="font-bold">Posts fixados</h1>
+        {
+          postsFixedList.map((p: any) => (
+            <PostLink title={p.title} url={`/post/${p.id}`} />
+          ))
+        }
+      </aside>
     </div>
   </div>
 </Base>

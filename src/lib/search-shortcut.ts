@@ -2,7 +2,7 @@ export function initSearchShortcut() {
   const searchInput = document.getElementById(
     "search-input",
   ) as HTMLInputElement | null;
-  const kbdIcon = document.getElementById("kdb-platform");
+  const kbdIcon = document.getElementById("kbd-platform");
 
   if (!searchInput) return;
 

@@ -3,10 +3,18 @@ import Navgithub from "./components/Navgithub.astro";
 import Navsearch from "./components/Navsearch.astro";
 import Navtheme from "./components/Navtheme.astro";
 
-const nameLinks = [
-  { link: "articles", label: "artigos" },
-  { link: "about", label: "sobre" },
-];
+const apiBase = import.meta.env.API_BASE_URL || "";
+let postsFixedList: any[] = [];
+try {
+  if (apiBase) {
+    const apiUrlFixedPosts = `${apiBase}/posts/fixed-posts`;
+    const responseFixedPosts = await fetch(apiUrlFixedPosts);
+    const findFixedPosts = await responseFixedPosts.json();
+    postsFixedList = findFixedPosts.data || [];
+  }
+} catch (e) {
+  postsFixedList = [];
+}
 ---
 
 <header
@@ -27,10 +35,131 @@ const nameLinks = [
     </div>
 
     <div class="flex items-center justify-end gap-3">
-      <Navgithub />
-      <Navtheme />
+      <button
+        id="nav-toggle"
+        aria-controls="mobile-overlay"
+        aria-expanded="false"
+        class="border-border-ui bg-bg-ui text-tx-muted inline-flex h-9 w-9 items-center justify-center rounded-lg border-2 lg:hidden"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
 
-      <Navsearch placeholder="Pesquisar por posts..." />
+      <div
+        id="nav-actions"
+        class="hidden items-center justify-end gap-3 lg:flex"
+      >
+        <Navgithub />
+        <Navtheme />
+        <Navsearch placeholder="Pesquisar por posts..." />
+      </div>
     </div>
   </nav>
 </header>
+
+<div id="mobile-overlay" class="fixed inset-0 z-60 hidden lg:hidden">
+  <div
+    id="mobile-overlay-backdrop"
+    class="absolute inset-0 bg-black/50"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div
+    id="mobile-overlay-panel"
+    class="bg-bg-page absolute inset-0 flex translate-y-4 transform flex-col p-6 opacity-0 transition-all duration-300 ease-out"
+  >
+    <div class="flex items-center justify-between">
+      <a href="/" class="group flex items-center gap-2 outline-none">
+        <span class="text-lg font-black tracking-tighter uppercase"
+          >my<span class="text-tx-dimmed">.</span>blog</span
+        >
+      </a>
+      <div class="flex items-center gap-3">
+        <Navgithub />
+        <Navtheme />
+        <button
+          id="mobile-overlay-close"
+          aria-label="Fechar menu"
+          class="border-border-ui bg-bg-ui inline-flex h-9 w-9 items-center justify-center rounded-lg border-2"
+          >✕</button
+        >
+      </div>
+    </div>
+
+    <div class="mt-6">
+      <Navsearch placeholder="Pesquisar por posts..." />
+    </div>
+
+    <div class="mt-6 border-t pt-4">
+      <h3 class="text-tx-dimmed mb-3 font-semibold">Posts fixados</h3>
+      <div class="flex flex-col gap-3">
+        {
+          postsFixedList.length ? (
+            postsFixedList.map((p: any) => (
+              <a
+                class="text-accent hover:text-accent-hover"
+                href={`/post/${p.id}`}
+              >
+                {p.title}
+              </a>
+            ))
+          ) : (
+            <div class="text-tx-dimmed">Nenhum post fixado</div>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const toggle = document.getElementById("nav-toggle");
+  const overlay = document.getElementById("mobile-overlay");
+  const closeBtn = document.getElementById("mobile-overlay-close");
+  const backdrop = document.getElementById("mobile-overlay-backdrop");
+
+  const panel = document.getElementById("mobile-overlay-panel");
+
+  const openOverlay = () => {
+    if (!overlay || !panel) return;
+    overlay.classList.remove("hidden");
+    requestAnimationFrame(() => {
+      panel.classList.remove("translate-y-4", "opacity-0");
+      panel.classList.add("translate-y-0", "opacity-100");
+    });
+    document.documentElement.classList.add("overflow-hidden");
+    toggle?.setAttribute("aria-expanded", "true");
+  };
+
+  const closeOverlay = () => {
+    if (!overlay || !panel) return;
+    panel.classList.remove("translate-y-0", "opacity-100");
+    panel.classList.add("translate-y-4", "opacity-0");
+    // wait for transition then hide
+    setTimeout(() => {
+      overlay.classList.add("hidden");
+    }, 320);
+    document.documentElement.classList.remove("overflow-hidden");
+    toggle?.setAttribute("aria-expanded", "false");
+  };
+
+  toggle?.addEventListener("click", openOverlay);
+  closeBtn?.addEventListener("click", closeOverlay);
+  backdrop?.addEventListener("click", closeOverlay);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeOverlay();
+  });
+</script>
