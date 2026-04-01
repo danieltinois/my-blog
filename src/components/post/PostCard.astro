@@ -21,23 +21,34 @@ const formattedDate = pubDate.toLocaleDateString("pt-br", {
 <a
   href={url}
   class="group border-border-ui bg-surface hover:border-surface-border-hover block w-full overflow-hidden rounded-xl border transition-all duration-300 hover:shadow-lg"
+  aria-label={`Abrir post ${title}`}
 >
   <article class="flex h-full flex-col">
-    <div class="flex flex-1 flex-col p-5">
+    <div class="flex flex-1 flex-col p-4 sm:p-5">
       <div class="mb-3 flex items-center gap-2">
         <time datetime={pubDate.toISOString()} class="text-tx-dimmed text-xs">
           {formattedDate}
         </time>
-        {tags ? tags.map((tag) => <PostTag title={tag} size={10} />) : null}
+        {
+          tags ? (
+            <div class="flex flex-wrap items-center gap-2">
+              {tags.map((tag) => (
+                <PostTag title={tag} size={10} />
+              ))}
+            </div>
+          ) : null
+        }
       </div>
 
       <h3
-        class="text-tx-base group-hover:text-accent-hover mb-2 text-xl font-bold transition-colors"
+        class="text-tx-base group-hover:text-accent-hover mb-2 text-lg font-bold transition-colors sm:text-xl"
       >
         {title}
       </h3>
 
-      <p class="text-tx-muted line-clamp-3 text-sm leading-relaxed">
+      <p
+        class="text-tx-muted line-clamp-3 text-sm leading-relaxed sm:text-base"
+      >
         {description}
       </p>
 
