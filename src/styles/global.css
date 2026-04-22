@@ -321,10 +321,11 @@
 }
 
 .post-content pre {
+  position: relative;
   overflow: auto;
   border-radius: 8px;
   background: var(--surface);
-  padding: 0.75rem 1rem;
+  padding: 2.75rem 1rem 0.9rem;
   border: 1px solid var(--surface-border-hover);
 }
 
@@ -419,10 +420,77 @@
 }
 
 .post-content.prose pre code {
+  display: block;
+  width: 100%;
+  white-space: pre;
+  line-height: 1.7;
+  font-size: 0.93em;
   background: transparent;
   padding: 0;
   border-radius: 0;
   font-weight: normal;
+  border: 0;
+}
+
+.post-content.prose pre code::before,
+.post-content.prose pre code::after {
+  content: none;
+}
+
+.post-content .hljs {
+  color: var(--text-base);
+}
+
+.dark .post-content .hljs {
+  color: #dbe6ff;
+}
+
+.dark .post-content .hljs-comment,
+.dark .post-content .hljs-quote {
+  color: #7f8ba9;
+  font-style: italic;
+}
+
+.dark .post-content .hljs-keyword,
+.dark .post-content .hljs-selector-tag,
+.dark .post-content .hljs-meta .hljs-keyword {
+  color: #ff7ab2;
+}
+
+.dark .post-content .hljs-string,
+.dark .post-content .hljs-attr,
+.dark .post-content .hljs-template-variable {
+  color: #98e1a6;
+}
+
+.dark .post-content .hljs-number,
+.dark .post-content .hljs-literal,
+.dark .post-content .hljs-symbol {
+  color: #ffb86c;
+}
+
+.dark .post-content .hljs-title,
+.dark .post-content .hljs-function,
+.dark .post-content .hljs-selector-id,
+.dark .post-content .hljs-selector-class {
+  color: #89b4ff;
+}
+
+.dark .post-content .hljs-variable,
+.dark .post-content .hljs-params,
+.dark .post-content .hljs-name,
+.dark .post-content .hljs-attribute {
+  color: #d9e2ff;
+}
+
+.dark .post-content .hljs-built_in,
+.dark .post-content .hljs-type,
+.dark .post-content .hljs-tag {
+  color: #8be9fd;
+}
+
+.dark .post-content .hljs-punctuation {
+  color: #9ba8cc;
 }
 
 .dark .post-content.prose {
@@ -447,4 +515,38 @@
   background: var(--surface);
   color: var(--text-base);
   border-color: var(--surface-border-hover);
+}
+
+.code-copy-btn {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  border: 1px solid var(--border-ui);
+  background: var(--bg-ui);
+  color: var(--text-muted);
+  border-radius: 0.6rem;
+  font-size: 0.74rem;
+  font-weight: 600;
+  line-height: 1;
+  min-height: 1.85rem;
+  padding: 0.45rem 0.7rem;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+
+.code-copy-btn:hover {
+  background: var(--bg-ui-hover);
+  color: var(--text-base);
+}
+
+.code-copy-btn:active {
+  transform: translateY(1px);
+}
+
+.code-copy-btn.is-copied {
+  color: var(--accent);
+  border-color: var(--accent);
 }
