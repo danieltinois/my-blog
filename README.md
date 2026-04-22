@@ -1,63 +1,28 @@
-# My Blog
+# danielporai.com
 
-A simple personal blog built with Astro and Tailwind CSS.
+A minimal and modern personal blog built with Astro.
 
-## Overview
+This project is where I share content about development, ideas, and things I'm building. It focuses on performance, simplicity, and a clean reading experience across all devices.
 
-This repository contains a lightweight blog site created with Astro. It uses Markdown files for content, Tailwind CSS for styling, and includes a minimal theme toggle and search shortcut.
+## Features
 
-## Key features
+📝 Blog system with Markdown posts
+🎨 Dark / Light theme  
+⚡ Fast and static (Astro)  
+📱 Fully responsive design  
+🔎 Post search  
+📌 Featured posts
 
-- Markdown-based posts (see `src/content`)
-- Reusable components in `src/components` and `src/layouts`
-- Responsive layout and theme support
+## Tech
 
-## Getting started
+Astro  
+HTML + CSS  
+Vanilla Typescript
 
-Prerequisites:
+## Running locally
 
-- Node.js (16+ recommended)
+bash npm install npm run dev
 
-Install dependencies:
+## Build
 
-```bash
-npm install
-```
-
-Run a local dev server:
-
-```bash
-npm run dev
-```
-
-Build for production:
-
-```bash
-npm run build
-```
-
-Preview the production build:
-
-```bash
-npm run preview
-```
-
-## Project structure
-
-- `src/pages` - site pages and routes
-- `src/layouts` - shared layouts (base, navbar, etc.)
-- `src/components` - UI components used across the site
-- `src/content` - Markdown posts and content files
-- `public` - static assets (icons, images)
-
-## Contributing
-
-Contributions are welcome. Open an issue or submit a pull request.
-
-## License
-
-This project is provided under the MIT License. If you prefer a different license, update this section accordingly.
-
-## Author
-
-danieltinois
+bash npm run build npm run preview 
