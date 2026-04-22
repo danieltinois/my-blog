@@ -2,9 +2,11 @@
 import Navgithub from "./components/Navgithub.astro";
 import Navsearch from "./components/Navsearch.astro";
 import Navtheme from "./components/Navtheme.astro";
+import PostLink from "@components/post/components/PostLink.astro";
 
 const apiBase = import.meta.env.API_BASE_URL || "";
 let postsFixedList: any[] = [];
+
 try {
   if (apiBase) {
     const apiUrlFixedPosts = `${apiBase}/posts/fixed-posts`;
@@ -12,154 +14,113 @@ try {
     const findFixedPosts = await responseFixedPosts.json();
     postsFixedList = findFixedPosts.data || [];
   }
-} catch (e) {
+} catch {
   postsFixedList = [];
 }
 ---
 
-<header
-  class="bg-bg-page/70 border-border-ui sticky top-0 z-50 w-full border-b-2 backdrop-blur-md"
->
-  <nav
-    class="mx-auto grid h-20 max-w-7xl grid-cols-2 items-center px-6 lg:px-10"
-    aria-label="Navegação Principal"
-  >
-    <div class="flex justify-start">
-      <a href="/" class="group flex items-center gap-2 outline-none">
-        <span
-          class="group-hover:text-tx-muted text-lg font-black tracking-tighter uppercase transition-colors"
-        >
-          my<span class="text-tx-dimmed">.</span>blog
-        </span>
+<header class="site-header">
+  <div class="site-header-inner">
+    <div class="site-header-main">
+      <a href="/" class="brand-link" aria-label="Voltar para home">
+        <span class="brand-name">danielporai</span>
+        <span class="brand-domain">.com</span>
       </a>
-    </div>
 
-    <div class="flex items-center justify-end gap-3">
-      <button
-        id="nav-toggle"
-        aria-controls="mobile-overlay"
-        aria-expanded="false"
-        class="border-border-ui bg-bg-ui text-tx-muted inline-flex h-9 w-9 items-center justify-center rounded-lg border-2 lg:hidden"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M4 6h16M4 12h16M4 18h16"></path>
-        </svg>
-      </button>
-
-      <div
-        id="nav-actions"
-        class="hidden items-center justify-end gap-3 lg:flex"
-      >
+      <div class="nav-actions-desktop">
+        <Navsearch
+          placeholder="Buscar posts"
+          inputId="search-input-desktop"
+          className="w-[20rem] xl:w-[24rem]"
+        />
         <Navgithub />
         <Navtheme />
-        <Navsearch placeholder="Pesquisar por posts..." />
       </div>
-    </div>
-  </nav>
-</header>
 
-<div id="mobile-overlay" class="fixed inset-0 z-60 hidden lg:hidden">
-  <div
-    id="mobile-overlay-backdrop"
-    class="absolute inset-0 bg-black/50"
-    aria-hidden="true"
-  >
-  </div>
-
-  <div
-    id="mobile-overlay-panel"
-    class="bg-bg-page absolute inset-0 flex translate-y-4 transform flex-col p-6 opacity-0 transition-all duration-300 ease-out"
-  >
-    <div class="flex items-center justify-between">
-      <a href="/" class="group flex items-center gap-2 outline-none">
-        <span class="text-lg font-black tracking-tighter uppercase"
-          >my<span class="text-tx-dimmed">.</span>blog</span
-        >
-      </a>
-      <div class="flex items-center gap-3">
-        <Navgithub />
+      <div class="nav-actions-mobile">
         <Navtheme />
+        <Navgithub />
         <button
-          id="mobile-overlay-close"
-          aria-label="Fechar menu"
-          class="border-border-ui bg-bg-ui inline-flex h-9 w-9 items-center justify-center rounded-lg border-2"
-          >✕</button
+          id="mobile-menu-toggle"
+          class="icon-action"
+          aria-controls="mobile-menu-panel"
+          aria-expanded="false"
+          aria-label="Abrir menu"
         >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="size-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            ></path>
+          </svg>
+        </button>
       </div>
     </div>
 
-    <div class="mt-6">
-      <Navsearch placeholder="Pesquisar por posts..." />
+    <div class="mobile-search-row">
+      <Navsearch
+        placeholder="Buscar posts"
+        inputId="search-input-mobile"
+        showShortcut={false}
+      />
     </div>
 
-    <div class="mt-6 border-t pt-4">
-      <h3 class="text-tx-dimmed mb-3 font-semibold">Posts fixados</h3>
-      <div class="flex flex-col gap-3">
+    <div id="mobile-menu-panel" class="mobile-menu-panel" data-open="false">
+      <p class="mobile-menu-title">Posts fixados</p>
+      <div class="mobile-fixed-list">
         {
           postsFixedList.length ? (
             postsFixedList.map((p: any) => (
-              <a
-                class="text-accent hover:text-accent-hover"
-                href={`/post/${p.id}`}
-              >
-                {p.title}
-              </a>
+              <PostLink title={p.title} url={`/post/${p.id}`} />
             ))
           ) : (
-            <div class="text-tx-dimmed">Nenhum post fixado</div>
+            <span class="text-tx-dimmed text-sm">Nenhum post fixado no momento.</span>
           )
         }
       </div>
     </div>
   </div>
-</div>
+</header>
 
 <script>
-  const toggle = document.getElementById("nav-toggle");
-  const overlay = document.getElementById("mobile-overlay");
-  const closeBtn = document.getElementById("mobile-overlay-close");
-  const backdrop = document.getElementById("mobile-overlay-backdrop");
+  const toggle = document.getElementById("mobile-menu-toggle");
+  const panel = document.getElementById("mobile-menu-panel");
 
-  const panel = document.getElementById("mobile-overlay-panel");
+  if (toggle && panel) {
+    const setMenuState = (isOpen: boolean) => {
+      panel.setAttribute("data-open", String(isOpen));
+      toggle.setAttribute("aria-expanded", String(isOpen));
+    };
 
-  const openOverlay = () => {
-    if (!overlay || !panel) return;
-    overlay.classList.remove("hidden");
-    requestAnimationFrame(() => {
-      panel.classList.remove("translate-y-4", "opacity-0");
-      panel.classList.add("translate-y-0", "opacity-100");
+    toggle.addEventListener("click", () => {
+      const isOpen = panel.getAttribute("data-open") === "true";
+      setMenuState(!isOpen);
     });
-    document.documentElement.classList.add("overflow-hidden");
-    toggle?.setAttribute("aria-expanded", "true");
-  };
 
-  const closeOverlay = () => {
-    if (!overlay || !panel) return;
-    panel.classList.remove("translate-y-0", "opacity-100");
-    panel.classList.add("translate-y-4", "opacity-0");
-    // wait for transition then hide
-    setTimeout(() => {
-      overlay.classList.add("hidden");
-    }, 320);
-    document.documentElement.classList.remove("overflow-hidden");
-    toggle?.setAttribute("aria-expanded", "false");
-  };
+    document.addEventListener("click", (event) => {
+      const target = event.target as Node;
+      const clickedOutside = !panel.contains(target) && !toggle.contains(target);
+      const isOpen = panel.getAttribute("data-open") === "true";
 
-  toggle?.addEventListener("click", openOverlay);
-  closeBtn?.addEventListener("click", closeOverlay);
-  backdrop?.addEventListener("click", closeOverlay);
+      if (clickedOutside && isOpen) {
+        setMenuState(false);
+      }
+    });
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeOverlay();
-  });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        setMenuState(false);
+      }
+    });
+
+    document.addEventListener("astro:after-swap", () => setMenuState(false));
+  }
 </script>

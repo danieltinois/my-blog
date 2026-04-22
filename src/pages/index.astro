@@ -15,6 +15,8 @@ const response = await fetch(apiUrl);
 const result = await response.json();
 
 const postsList = result.data || [];
+const total = result.total || postsList.length;
+const totalPages = Math.max(1, Math.ceil(total / limit));
 
 const apiUrlFixedPosts = `${apiBaseUrl}/posts/fixed-posts`;
 const responseFixedPosts = await fetch(apiUrlFixedPosts);
@@ -23,12 +25,41 @@ const findFixedPosts = await responseFixedPosts.json();
 const postsFixedList = findFixedPosts.data || [];
 ---
 
-<Base pageTitle="home">
-  <div
-    class="grid min-h-screen grid-cols-1 gap-8 lg:grid-cols-6 lg:grid-rows-5 lg:gap-0"
-  >
-    <div class="lg:col-span-4 lg:row-span-5">
-      <div class="flex flex-col gap-8 px-0 sm:px-4 lg:px-6">
+<Base pageTitle="Home">
+  <section aria-label="Introdução do blog" class="home-hero">
+    <p class="home-eyebrow">
+      Diário (quase) organizado de engenharia e produto
+    </p>
+
+    <h1 class="home-title">
+      Construindo software, errando no processo e escrevendo sobre isso depois.
+    </h1>
+
+    <p class="home-subtitle">
+      Aqui tem código, decisões duvidosas, aprendizados reais e algumas opiniões
+      que ninguém pediu... Tudo pra quem curte criar produto de verdade, sem
+      firula e sem romantizar demais.
+    </p>
+  </section>
+
+  {
+    postsFixedList.length ? (
+      <section class="mobile-pinned" aria-label="Posts fixados">
+        <p class="home-eyebrow">Posts fixados</p>
+        <div class="mobile-pinned-track">
+          {postsFixedList.map((p: any) => (
+            <a class="mobile-pinned-item" href={`/post/${p.id}`}>
+              {p.title}
+            </a>
+          ))}
+        </div>
+      </section>
+    ) : null
+  }
+
+  <section class="home-layout" aria-label="Conteúdo principal">
+    <div class="home-main">
+      <div class="post-list">
         {
           postsList.map((post: any) => (
             <PostCard
@@ -40,19 +71,28 @@ const postsFixedList = findFixedPosts.data || [];
             />
           ))
         }
-
-        <NavNextAndPrevious />
       </div>
+
+      <NavNextAndPrevious page={page} totalPages={totalPages} limit={limit} />
     </div>
-    <div class="lg:col-span-2 lg:row-span-5">
-      <aside class="hidden px-0 sm:px-4 lg:block lg:px-6">
-        <h1 class="font-bold">Posts fixados</h1>
-        {
-          postsFixedList.map((p: any) => (
-            <PostLink title={p.title} url={`/post/${p.id}`} />
-          ))
-        }
-      </aside>
-    </div>
-  </div>
+
+    <aside class="home-sidebar" aria-label="Barra lateral">
+      <div class="sidebar-card">
+        <h2 class="sidebar-title">Posts fixados</h2>
+        <div class="mobile-fixed-list">
+          {
+            postsFixedList.length ? (
+              postsFixedList.map((p: any) => (
+                <PostLink title={p.title} url={`/post/${p.id}`} />
+              ))
+            ) : (
+              <span class="text-tx-dimmed text-sm">
+                Nenhum post fixado no momento.
+              </span>
+            )
+          }
+        </div>
+      </div>
+    </aside>
+  </section>
 </Base>

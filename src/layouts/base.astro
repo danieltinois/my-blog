@@ -3,22 +3,26 @@ import Navbar from "@components/layout/navbar/Navbar.astro";
 import "@styles/global.css";
 
 const { pageTitle } = Astro.props;
+const title = `danielporai.com | ${pageTitle}`;
 ---
 
 <html lang="pt-br">
   <head>
     <meta charset="utf-8" />
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&family=Space+Grotesk:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <title>my blog - {pageTitle}</title>
+    <title>{title}</title>
 
     <script is:inline>
       (function () {
@@ -36,9 +40,8 @@ const { pageTitle } = Astro.props;
   </head>
   <body>
     <Navbar />
-
-    <article class="mx-auto grid max-w-7xl px-4 pt-6 sm:px-6 lg:px-10">
+    <main class="page-shell">
       <slot />
-    </article>
+    </main>
   </body>
 </html>

@@ -3,11 +3,43 @@ import PostMeta from "@components/post/components/PostMeta.astro";
 import PostTitle from "@components/post/components/PostTitle.astro";
 import Base from "@layouts/base.astro";
 import { Icon } from "astro-icon/components";
-import { marked } from "marked";
+import { Marked } from "marked";
+import { markedHighlight } from "marked-highlight";
+import hljs from "highlight.js/lib/core";
+import bash from "highlight.js/lib/languages/bash";
+import css from "highlight.js/lib/languages/css";
+import javascript from "highlight.js/lib/languages/javascript";
+import json from "highlight.js/lib/languages/json";
+import plaintext from "highlight.js/lib/languages/plaintext";
+import typescript from "highlight.js/lib/languages/typescript";
+import xml from "highlight.js/lib/languages/xml";
 
 export const prerender = false;
 
 const API_URL = import.meta.env.API_BASE_URL;
+
+hljs.registerLanguage("bash", bash);
+hljs.registerLanguage("shell", bash);
+hljs.registerLanguage("sh", bash);
+hljs.registerLanguage("js", javascript);
+hljs.registerLanguage("javascript", javascript);
+hljs.registerLanguage("ts", typescript);
+hljs.registerLanguage("typescript", typescript);
+hljs.registerLanguage("json", json);
+hljs.registerLanguage("html", xml);
+hljs.registerLanguage("xml", xml);
+hljs.registerLanguage("css", css);
+hljs.registerLanguage("plaintext", plaintext);
+
+const parser = new Marked(
+  markedHighlight({
+    langPrefix: "hljs language-",
+    highlight(code, lang) {
+      const language = hljs.getLanguage(lang) ? lang : "plaintext";
+      return hljs.highlight(code, { language }).value;
+    },
+  }),
+);
 
 async function fetchJson(url: string) {
   try {
@@ -32,7 +64,7 @@ if (!post || !post.id) {
   return Astro.redirect("/404");
 }
 
-const contentHtml = post.content ? await marked.parse(post.content) : "";
+const contentHtml = post.content ? await parser.parse(post.content) : "";
 const pubDate = post.publishedAt ? new Date(post.publishedAt) : null;
 ---
 
@@ -70,3 +102,48 @@ const pubDate = post.publishedAt ? new Date(post.publishedAt) : null;
     </div>
   </main>
 </Base>
+
+<script>
+  const initCodeCopyButtons = () => {
+    const blocks = document.querySelectorAll(".post-content pre");
+
+    blocks.forEach((pre) => {
+      if (pre.querySelector(".code-copy-btn")) return;
+
+      const code = pre.querySelector("code");
+      if (!code) return;
+
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "code-copy-btn";
+      button.setAttribute("aria-label", "Copiar código");
+      button.textContent = "Copiar";
+
+      button.addEventListener("click", async () => {
+        const text = code.textContent ?? "";
+        if (!text) return;
+
+        try {
+          await navigator.clipboard.writeText(text);
+          button.textContent = "Copiado!";
+          button.classList.add("is-copied");
+          setTimeout(() => {
+            button.textContent = "Copiar";
+            button.classList.remove("is-copied");
+          }, 1400);
+        } catch {
+          button.textContent = "Falhou";
+          setTimeout(() => {
+            button.textContent = "Copiar";
+          }, 1400);
+        }
+      });
+
+      pre.appendChild(button);
+    });
+  };
+
+  initCodeCopyButtons();
+  document.addEventListener("astro:page-load", initCodeCopyButtons);
+  document.addEventListener("astro:after-swap", initCodeCopyButtons);
+</script>

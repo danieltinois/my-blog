@@ -1,23 +1,38 @@
-export function initSearchShortcut() {
-  const searchInput = document.getElementById(
-    "search-input",
-  ) as HTMLInputElement | null;
-  const kbdIcon = document.getElementById("kbd-platform");
+let shortcutInitialized = false;
+
+const getSearchInput = (): HTMLInputElement | null => {
+  const inputs = Array.from(
+    document.querySelectorAll('[data-search-input="true"]'),
+  ) as HTMLInputElement[];
+
+  return (
+    inputs.find((input) => input.offsetParent !== null && !input.disabled) ??
+    inputs[0] ??
+    null
+  );
+};
+
+const handleKeyDown = (e: KeyboardEvent) => {
+  if (!(e.metaKey || e.ctrlKey) || e.key.toLowerCase() !== "k") {
+    return;
+  }
+
+  const searchInput = getSearchInput();
 
   if (!searchInput) return;
 
-  if (kbdIcon) {
-    const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
-    kbdIcon.textContent = isMac ? "⌘" : "Ctrl";
+  e.preventDefault();
+  searchInput.focus();
+};
+
+export function initSearchShortcut() {
+  document.querySelectorAll("[data-kbd-platform]").forEach((icon) => {
+    const isMac = navigator.platform.toUpperCase().includes("MAC");
+    icon.textContent = isMac ? "⌘" : "Ctrl";
+  });
+
+  if (!shortcutInitialized) {
+    window.addEventListener("keydown", handleKeyDown);
+    shortcutInitialized = true;
   }
-
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if ((e.metaKey || e.ctrlKey) && e.key.toLocaleLowerCase() === "k") {
-      e.preventDefault();
-      searchInput.focus();
-    }
-  };
-
-  window.removeEventListener("keydown", handleKeyDown);
-  window.addEventListener("keydown", handleKeyDown);
 }
