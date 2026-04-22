@@ -1,51 +1,55 @@
 ---
 import { Icon } from "astro-icon/components";
 
+interface Props {
+  page?: number;
+  totalPages?: number;
+  limit?: number;
+}
+
+const { page: pageProp, totalPages: totalPagesProp, limit: limitProp } =
+  Astro.props as Props;
+
 const url = new URL(Astro.request.url);
-const page = Number(url.searchParams.get("page") || "1");
-const limit = Number(url.searchParams.get("limit") || "5");
+const page = pageProp ?? Number(url.searchParams.get("page") || "1");
+const limit = limitProp ?? Number(url.searchParams.get("limit") || "5");
 
-const apiUrl = `${import.meta.env.API_BASE_URL}/posts?page=${page}&limit=${limit}`;
-const response = await fetch(apiUrl);
-const result = await response.json();
-
-const postsList = result.data || [];
-const total = result.total || postsList.length;
-const totalPages = Math.max(1, Math.ceil(total / limit));
+const totalPages =
+  totalPagesProp ??
+  (() => {
+    const total = Number(url.searchParams.get("total") || "1");
+    return Math.max(1, total);
+  })();
 ---
 
-<nav class="mt-6 flex items-center justify-center gap-3">
+<nav class="pagination" aria-label="Paginação de posts">
   {
     page > 1 ? (
-      <div class="flex items-center gap-1">
-        <Icon name="lucide:arrow-left" class="text-accent size-5" />
-        <a class="text-accent" href={`/?page=${page - 1}&limit=${limit}`}>
-          Anterior
-        </a>
-      </div>
+      <a class="pagination-button" href={`/?page=${page - 1}&limit=${limit}`}>
+        <Icon name="lucide:arrow-left" class="size-4" />
+        Anterior
+      </a>
     ) : (
-      <div class="flex items-center gap-1">
-        <Icon name="lucide:arrow-left" class="text-tx-dimmed size-5" />
-        <span class="text-tx-dimmed">Anterior</span>
-      </div>
+      <span class="pagination-button" aria-disabled="true">
+        <Icon name="lucide:arrow-left" class="size-4" />
+        Anterior
+      </span>
     )
   }
 
-  <span class="mx-2">{page} / {totalPages}</span>
+  <span class="pagination-indicator">Página {page} de {totalPages}</span>
 
   {
     page < totalPages ? (
-      <div class="flex items-center gap-1">
-        <a class="text-accent" href={`/?page=${page + 1}&limit=${limit}`}>
-          Próxima
-        </a>
-        <Icon name="lucide:arrow-right" class="text-accent size-5" />
-      </div>
+      <a class="pagination-button" href={`/?page=${page + 1}&limit=${limit}`}>
+        Próxima
+        <Icon name="lucide:arrow-right" class="size-4" />
+      </a>
     ) : (
-      <div class="flex items-center gap-1">
-        <span class="text-tx-dimmed">Próxima</span>
-        <Icon name="lucide:arrow-right" class="text-tx-dimmed size-5" />
-      </div>
+      <span class="pagination-button" aria-disabled="true">
+        Próxima
+        <Icon name="lucide:arrow-right" class="size-4" />
+      </span>
     )
   }
 </nav>

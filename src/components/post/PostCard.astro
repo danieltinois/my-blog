@@ -11,65 +11,48 @@ interface Props {
 
 const { title, description, pubDate, url, tags } = Astro.props as Props;
 
-const formattedDate = pubDate.toLocaleDateString("pt-br", {
+const formattedDate = pubDate.toLocaleDateString("pt-BR", {
   day: "2-digit",
-  month: "long",
+  month: "short",
   year: "numeric",
 });
 ---
 
-<a
-  href={url}
-  class="group border-border-ui bg-surface hover:border-surface-border-hover block w-full overflow-hidden rounded-xl border transition-all duration-300 hover:shadow-lg"
-  aria-label={`Abrir post ${title}`}
->
-  <article class="flex h-full flex-col">
-    <div class="flex flex-1 flex-col p-4 sm:p-5">
-      <div class="mb-3 flex items-center gap-2">
-        <time datetime={pubDate.toISOString()} class="text-tx-dimmed text-xs">
-          {formattedDate}
-        </time>
-        {
-          tags ? (
-            <div class="flex flex-wrap items-center gap-2">
-              {tags.map((tag) => (
-                <PostTag title={tag} size={10} />
-              ))}
-            </div>
-          ) : null
-        }
-      </div>
-
-      <h3
-        class="text-tx-base group-hover:text-accent-hover mb-2 text-lg font-bold transition-colors sm:text-xl"
-      >
-        {title}
-      </h3>
-
-      <p
-        class="text-tx-muted line-clamp-3 text-sm leading-relaxed sm:text-base"
-      >
-        {description}
-      </p>
-
-      <div
-        class="text-accent group-hover:text-accent-hover mt-auto flex items-center pt-4 text-sm font-medium transition-colors"
-      >
-        Ler artigo
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-        </svg>
-      </div>
+<a href={url} class="card-link" aria-label={`Abrir post ${title}`}>
+  <article class="card-body">
+    <div class="card-meta">
+      <time datetime={pubDate.toISOString()}>{formattedDate}</time>
+      {
+        tags?.length ? (
+          <div class="flex flex-wrap items-center gap-1.5">
+            {tags.map((tag) => (
+              <PostTag title={tag} size={11} />
+            ))}
+          </div>
+        ) : null
+      }
     </div>
+
+    <h2 class="card-title">{title}</h2>
+
+    <p class="card-description">{description}</p>
+
+    <span class="card-cta">
+      Ler artigo
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="size-4"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M13 7l5 5m0 0l-5 5m5-5H6"
+        ></path>
+      </svg>
+    </span>
   </article>
 </a>

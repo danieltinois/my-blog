@@ -7,8 +7,4 @@ interface PostTagProps {
 const { title, size } = Astro.props as PostTagProps;
 ---
 
-<span
-  class={`bg-tag-bg text-tag-text rounded-full px-2 py-0.5 text-[${size}px] font-medium`}
->
-  #{title}
-</span>
+<span class="post-tag" style={`font-size: ${size}px`}>#{title}</span>
