@@ -27,11 +27,18 @@ const postsFixedList = findFixedPosts.data || [];
 
 <Base pageTitle="Home">
   <section aria-label="Introdução do blog" class="home-hero">
-    <p class="home-eyebrow">Diário de engenharia e produto</p>
-    <h1 class="home-title">Pensamentos práticos sobre software, carreira e construção de produtos.</h1>
+    <p class="home-eyebrow">
+      Diário (quase) organizado de engenharia e produto
+    </p>
+
+    <h1 class="home-title">
+      Construindo software, errando no processo e escrevendo sobre isso depois.
+    </h1>
+
     <p class="home-subtitle">
-      Conteúdo direto, técnico e humano para quem gosta de construir com qualidade.
-      Atualizações frequentes em formato curto e objetivo.
+      Aqui tem código, decisões duvidosas, aprendizados reais e algumas opiniões
+      que ninguém pediu... Tudo pra quem curte criar produto de verdade, sem
+      firula e sem romantizar demais.
     </p>
   </section>
 
@@ -79,7 +86,9 @@ const postsFixedList = findFixedPosts.data || [];
                 <PostLink title={p.title} url={`/post/${p.id}`} />
               ))
             ) : (
-              <span class="text-tx-dimmed text-sm">Nenhum post fixado no momento.</span>
+              <span class="text-tx-dimmed text-sm">
+                Nenhum post fixado no momento.
+              </span>
             )
           }
         </div>
