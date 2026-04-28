@@ -14,11 +14,17 @@ const {
 } = Astro.props as Props;
 ---
 
-<form action="/search" role="search" class={`search-form ${className}`.trim()}>
+<form
+  action="/search"
+  method="get"
+  role="search"
+  class={`search-form ${className}`.trim()}
+>
   <input
     id={inputId}
     data-search-input="true"
     type="search"
+    name="q"
     placeholder={placeholder}
     class="search-input"
   />

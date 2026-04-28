@@ -5,10 +5,17 @@ interface Props {
   page?: number;
   totalPages?: number;
   limit?: number;
+  basePath?: string;
+  queryParams?: Record<string, string | number | boolean | undefined>;
 }
 
-const { page: pageProp, totalPages: totalPagesProp, limit: limitProp } =
-  Astro.props as Props;
+const {
+  page: pageProp,
+  totalPages: totalPagesProp,
+  limit: limitProp,
+  basePath = "/",
+  queryParams = {},
+} = Astro.props as Props;
 
 const url = new URL(Astro.request.url);
 const page = pageProp ?? Number(url.searchParams.get("page") || "1");
@@ -20,12 +27,27 @@ const totalPages =
     const total = Number(url.searchParams.get("total") || "1");
     return Math.max(1, total);
   })();
+
+const buildPageUrl = (nextPage: number) => {
+  const params = new URLSearchParams();
+
+  Object.entries(queryParams).forEach(([key, value]) => {
+    if (value !== undefined) {
+      params.set(key, String(value));
+    }
+  });
+
+  params.set("page", String(nextPage));
+  params.set("limit", String(limit));
+
+  return `${basePath}?${params.toString()}`;
+};
 ---
 
 <nav class="pagination" aria-label="Paginação de posts">
   {
     page > 1 ? (
-      <a class="pagination-button" href={`/?page=${page - 1}&limit=${limit}`}>
+      <a class="pagination-button" href={buildPageUrl(page - 1)}>
         <Icon name="lucide:arrow-left" class="size-4" />
         Anterior
       </a>
@@ -41,7 +63,7 @@ const totalPages =
 
   {
     page < totalPages ? (
-      <a class="pagination-button" href={`/?page=${page + 1}&limit=${limit}`}>
+      <a class="pagination-button" href={buildPageUrl(page + 1)}>
         Próxima
         <Icon name="lucide:arrow-right" class="size-4" />
       </a>

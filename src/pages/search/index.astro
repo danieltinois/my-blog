@@ -1,0 +1,99 @@
+---
+import NavNextAndPrevious from "@components/navigation/NavNextAndPrevious.astro";
+import PostCard from "@components/post/PostCard.astro";
+import Base from "@layouts/base.astro";
+
+const apiBaseUrl = import.meta.env.API_BASE_URL;
+
+const url = new URL(Astro.request.url);
+const query = url.searchParams.get("q")?.trim() || "";
+const page = Number(url.searchParams.get("page") || "1");
+const limit = Number(url.searchParams.get("limit") || "5");
+
+let postsList = [];
+let total = 0;
+
+if (query) {
+  const apiUrl = `${apiBaseUrl}/posts/search?q=${encodeURIComponent(query)}&page=${page}&limit=${limit}`;
+  const response = await fetch(apiUrl);
+  const result = await response.json();
+
+  postsList = result.data || [];
+  total = result.total || postsList.length;
+}
+
+const totalPages = Math.max(1, Math.ceil(total / limit));
+
+const getPostTags = (post: any) => {
+  if (Array.isArray(post.tags)) {
+    return post.tags;
+  }
+
+  if (typeof post.tags === "string") {
+    return post.tags
+      .split(",")
+      .map((tag: string) => tag.trim())
+      .filter(Boolean);
+  }
+
+  return [];
+};
+---
+
+<Base pageTitle={query ? `Busca por ${query}` : "Busca"}>
+  <section class="home-layout" aria-label="Resultados da busca">
+    <div class="home-main">
+      <div class="mb-6">
+        <p class="home-eyebrow">Busca</p>
+
+        <h1 class="text-tx text-2xl font-bold">
+          {query ? `Resultados para “${query}”` : "Digite algo para pesquisar"}
+        </h1>
+
+        {
+          query ? (
+            <p class="text-tx-dimmed mt-2 text-sm">
+              {total} {total === 1 ? "post encontrado" : "posts encontrados"}
+            </p>
+          ) : null
+        }
+      </div>
+
+      {
+        query && postsList.length ? (
+          <>
+            <div class="post-list">
+              {postsList.map((post: any) => (
+                <PostCard
+                  title={post.title}
+                  description={post.description}
+                  pubDate={new Date(post.publishedAt)}
+                  url={`/post/${post.id}`}
+                  tags={getPostTags(post)}
+                />
+              ))}
+            </div>
+
+            <NavNextAndPrevious
+              page={page}
+              totalPages={totalPages}
+              limit={limit}
+              basePath="/search"
+              queryParams={{ q: query }}
+            />
+          </>
+        ) : query ? (
+          <div class="border-border bg-surface rounded-2xl border p-6">
+            <h2 class="text-tx text-lg font-semibold">
+              Nenhum post encontrado
+            </h2>
+
+            <p class="text-tx-dimmed mt-2 text-sm">
+              Tenta buscar por outro termo ou confira se escreveu certinho.
+            </p>
+          </div>
+        ) : null
+      }
+    </div>
+  </section>
+</Base>
